@@ -1,0 +1,57 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Document</title>
+</head>
+
+<body>
+  <div id="root">
+    <img id= img src="" alt="">
+  </div>
+  <div id="sroot"></div>
+  <script>
+    const root = document.getElementById("root");
+    const sroot = document.getElementById("sroot");
+
+    function imgSet(imgObj, nth) {
+      const pokeImage = imgObj;
+      const xhr = new XMLHttpRequest();
+      const _URL = `https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/${nth}.png`;
+      xhr.open("GET", _URL);
+      xhr.responseType = 'blob';
+      xhr.send();
+      xhr.addEventListener('load', function () {
+        const objectURL = URL.createObjectURL(xhr.response);
+        pokeImage.src = objectURL;
+      })
+    };
+
+    function nameSet(nameObj, nth) {
+      const namexhr = new XMLHttpRequest();
+      const _nameURL = `https://pokeapi.co/api/v2/pokemon-species/${nth}/`;
+      namexhr.open("GET", _nameURL);
+      namexhr.send();
+      namexhr.addEventListener('load', function () {
+        const obj = JSON.parse(namexhr.response);
+        nameObj.textContent = obj.names[2].name;
+      })
+    }
+
+    function numRandom(min, max) {
+      min = Math.ceil(min);
+      max = Math.floor(max);
+      return Math.floor(Math.random() * (max - min) + min);
+    }
+
+    let num = numRandom(1, 152);
+
+    imgSet(img, num);
+    nameSet(sroot, num);
+  </script>
+</body>
+
+</html>
